@@ -1,4 +1,4 @@
-from langchain_community.document_loaders import DirectoryLoader, Docx2txtLoader
+from langchain_community.document_loaders import DirectoryLoader, TextLoader
 from langchain.text_splitter import CharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain_community.graphs import Neo4jGraph
@@ -8,7 +8,7 @@ import os
 
 def load_documents(docs_path):
     """Load documents from the specified path"""
-    loader = DirectoryLoader(docs_path, glob="**/*.docx", loader_cls=Docx2txtLoader)
+    loader = DirectoryLoader(docs_path, glob="**/*.txt", loader_cls=TextLoader)
     return loader.load()
 
 def create_chunks(docs, chunk_size=300, chunk_overlap=100):
@@ -96,7 +96,7 @@ def process_entities(chunk, graph, doc_transformer):
         graph.add_graph_documents(graph_docs)
 
 def main():
-    DOCX_PATH = "/docs"
+    DOCX_PATH = "./docs"
     docs = load_documents(DOCX_PATH)
     chunks = create_chunks(docs)
     
